@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter Assignment</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="assets/lib/bootstrap/css/bootstrap.min.css">
+
+    <!-- select2 -->
+     <link rel="stylesheet" href="assets/plugin/select2/select2.min.css">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="converter__container">
+        <h1><b>Currency Converter</b></h1>
+        <form action="javascript:void(0)" method="post" id="form" class="converter__content needs-validation" novalidate>
+            <div class="row mb-2 g-2">
+                <div class="col-12 col-md-4 mb-3 mb-md-0">
+                    <div class="form-group position-relative w-100">
+                        <label for="amount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" value="0" name="amount" id="amount" required>
+                        <div class="invalid-tooltip">Please Enter Amount.</div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <div class="row g-2">
+                        <div class="col-12 col-md-5">
+                            <div class="form-group position-relative">
+                                <label for="convertFrom" class="form-label">From</label>
+                                <select class="form-select w-100" id="convertFrom" required></select>
+                                <div class="invalid-tooltip">Please Select Convert From.</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2 pt-md-2">
+                            <button type="button" id="swapBtn" class="btn btn-outline-warning mt-md-4 w-100">Swap</button>
+                        </div>
+                        <div class="col-12 col-md-5">
+                            <div class="form-group position-relative">
+                                <label for="convertTo" class="form-label">To</label>
+                                <select class="form-select w-100" id="convertTo" required></select>
+                                <div class="invalid-tooltip">Please Select Convert To.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-2">
+                    <button class="btn btn-primary w-100" type="submit">Convert</button>
+                </div>
+                <div class="col-12">
+                    <h3>Converted Amount:</h3>
+                    <p id="summaryText" class="text-success h5">Summary</p>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- jQuery -->
+     <script src="assets/lib/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="assets/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="assets/lib/bootstrap/js/bootstrap.min.js"></script> -->
+
+    <!-- select2 JS -->
+     <script src="assets/plugin/select2/select2.min.js"></script>
+
+     <script>
+        $("#form").on('submit', function(e){
+            e.preventDefault();
+
+            // validating form
+            if (this.checkValidity() === false) {
+                e.preventDefault();
+                e.stopPropagation();
+            } else { // exicuting form if validated
+                const from = $("#convertFrom").val() || ''
+                const to = $("#convertTo").val() || ''
+                const amount = $("#amount").val() || 0
+                const getConversion = async () => {
+                    try {
+                        const response = await fetch(`https://v6.exchangerate-api.com/v6/c76cde57f89869244b9e487f/pair/${from}/${to}`)
+                        const json = await response.json()
+                        const conversionRate = json.conversion_rate
+                        const convertedAmount = conversionRate * amount
+                        const summary = `${amount} ${json.base_code} = ${convertedAmount} ${json.target_code}`
+                        $("#summaryText").text(summary);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+                getConversion()
+            }
+            this.classList.add('was-validated');
+        })
+
+        /*
+        push - adds item at the end
+        unshift - adds item at the start
+
+        pop - removes the last item 
+        shift - removes the forst item
+        */
+
+        async function fetchOptions(selector){
+            try {
+                const response = await fetch('https://v6.exchangerate-api.com/v6/c76cde57f89869244b9e487f/codes')
+                const json = await response.json()
+                const data = json.supported_codes
+                const options = data.map(d => ({id:d[0], text: d[1]}))
+                options.unshift({id:"", text: "Select Options"})
+                $(selector).select2({
+                    data: options,
+                    dropdownParent: $("#form"),
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchOptions("#convertFrom");
+        fetchOptions("#convertTo");
+
+        $("#swapBtn").on('click', function() {
+            const from = $("#convertFrom").val() || ''
+            const to = $("#convertTo").val() || ''
+            $("#convertFrom").val(to).trigger('change')
+            $("#convertTo").val(from).trigger('change')
+        })
+     </script>
+</body>
+</html>

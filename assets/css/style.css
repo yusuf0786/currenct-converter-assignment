@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 14px;
+}
+@media screen and (min-width: 1024px) {
+  html {
+    font-size: 14px;
+  }
+}
+@media screen and (min-width: 1280px) {
+  html {
+    font-size: 15px;
+  }
+}
+@media screen and (min-width: 1440px) {
+  html {
+    font-size: 16px;
+  }
+}
+@media screen and (min-width: 1600px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+body {
+  font-weight: 400;
+  font-size: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Hide the number input arrows in Webkit browsers (e.g., Chrome, Safari) */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide the number input arrows in Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.converter__container {
+  padding: 2rem;
+  width: 95%;
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: rgba(240, 240, 240, 0.5);
+  color: #002b36;
+  border-radius: 10px;
+  box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.1);
+}
+.converter__container h1 {
+  text-align: center;
+}
+
+.select2-container .select2-selection {
+  min-height: 42px;
+  border: 1px solid #ced4da;
+}
+.select2-container .select2-selection .select2-selection__rendered {
+  height: 100%;
+  padding: 0.375rem 1rem;
+}
+.select2-container .select2-selection .select2-selection__arrow {
+  height: 100%;
+}
+.select2-container--open .select2-selection,
+.select2-container--open .select2-dropdown {
+  border-color: #86b7fe;
+}
+.select2-container .select2-dropdown .select2-search--dropdown {
+  padding: 1rem;
+}
+.select2-container .select2-dropdown .select2-search--dropdown input {
+  border-radius: 8px;
+}

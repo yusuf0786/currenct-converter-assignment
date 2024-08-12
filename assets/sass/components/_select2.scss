@@ -1,0 +1,29 @@
+@use '../utils/colors' as *;
+
+.select2-container {
+    .select2-selection {
+        min-height: 42px;
+        border: 1px solid $bootstrao_border_color;
+        .select2-selection__rendered {
+            height: 100%;
+            padding: 0.375rem 1rem;
+        }
+        .select2-selection__arrow {
+            height: 100%;
+        }
+    }
+    &--open {
+        .select2-selection,
+        .select2-dropdown {
+            border-color: $bootstrao_border_color_focus;
+        }
+    }
+    .select2-dropdown {
+        .select2-search--dropdown {
+            padding: 1rem;
+            input {
+                border-radius: 8px;
+            }
+        }
+    }
+}
